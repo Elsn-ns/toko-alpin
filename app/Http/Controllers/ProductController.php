@@ -50,7 +50,20 @@ class ProductController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            $validated['image'] = $request->file('image')->store('products', 'public');
+
+            $file = $request->file('image');
+
+            $filename = time().'_'.$file->getClientOriginalName();
+
+            $destination = $_SERVER['DOCUMENT_ROOT'] . '/storage/products';
+
+            if (!file_exists($destination)) {
+                mkdir($destination, 0755, true);
+            }
+
+            $file->move($destination, $filename);
+
+            $validated['image'] = 'products/' . $filename;
         }
 
         Product::create($validated);
