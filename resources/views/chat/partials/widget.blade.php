@@ -98,7 +98,7 @@
                                 <div class="flex items-center gap-2" :class="msg.is_staff ? 'flex-row-reverse' : ''">
                                      <span class="text-[8px] font-black uppercase tracking-widest" 
                                            :class="msg.is_staff ? 'text-indigo-400' : 'text-slate-400'"
-                                           x-text="msg.is_staff ? 'Staff' : 'Client'"></span>
+                                           x-text="msg.is_staff === isStaff ? 'Anda' : activeCustomer.name"></span>
                                      <span class="text-[8px] font-bold text-slate-300" x-text="msg.time"></span>
                                 </div>
                                 <div class="px-5 py-3.5 transition-all duration-300" 
@@ -145,10 +145,10 @@
                 view: '{{ auth()->user()->isStaff() ? 'list' : 'chat' }}',
                 conversations: @json($conversations ?? []),
                 currentMessages: @json($messages ?? []),
-                activeConversationId: {{ $conversation?->id ?? 'null' }},
+                activeConversationId: {{ ($conversation ?? null)?->id ?? 'null' }},
                 activeCustomer: {
-                    name: '{{ $conversation?->customer?->name ?? '' }}',
-                    initials: '{{ substr($conversation?->customer?->name ?? 'G', 0, 1) }}'
+                    name: @json(auth()->user()->isStaff() ? ($conversation?->customer?->name ?? '') : 'Staff Admin'),
+                    initials: @json(auth()->user()->isStaff() ? (substr($conversation?->customer?->name ?? 'G', 0, 1)) : 'SA')
                 },
                 unreadCount: {{ $unread ?? 0 }},
                 newMessage: '',
@@ -261,6 +261,7 @@
                     .then(res => res.json())
                     .then(data => {
                         if (data.status === 'success') {
+                            this.activeConversationId = data.message.conversation_id;
                             const newMsg = {
                                 id: data.message.id,
                                 body: data.message.body,
