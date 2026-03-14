@@ -40,9 +40,10 @@
         </div>
     </div>
 
-    <!-- Data Table -->
+    <!-- Data Table (Desktop) & Card View (Mobile) -->
     <div class="glass-card shadow-xl shadow-slate-200/50 overflow-hidden border border-white/50 bg-white/70 backdrop-blur-xl">
-        <div class="overflow-x-auto">
+        <!-- Desktop Table View -->
+        <div class="hidden md:block overflow-x-auto">
             <table class="w-full text-left border-collapse">
                 <thead>
                     <tr class="bg-slate-50 border-b border-slate-100 text-slate-400 text-[10px] font-black uppercase tracking-[0.2em]">
@@ -133,6 +134,67 @@
                 </tbody>
             </table>
         </div>
+
+        <!-- Mobile Card View -->
+        <div class="md:hidden divide-y divide-slate-50">
+            @forelse($products as $product)
+                <div class="p-6 space-y-4">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-slate-100 flex-shrink-0 flex items-center justify-center font-black text-slate-400 text-lg border border-slate-200/50 overflow-hidden">
+                            @if($product->image)
+                                <img src="{{ asset('storage/' . $product->image) }}" class="w-full h-full object-cover">
+                            @else
+                                {{ substr($product->name, 0, 1) }}
+                            @endif
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <h3 class="font-black text-slate-900 truncate leading-tight">{{ $product->name }}</h3>
+                            <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">KODE: {{ $product->product_code }}</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="font-black text-slate-900">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
+                            @if($product->price_pack)
+                                <p class="text-[8px] font-bold text-indigo-500 uppercase">Pack: Rp {{ number_format($product->price_pack, 0, ',', '.') }}</p>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center bg-slate-50 rounded-2xl p-3 border border-slate-100">
+                        <div class="flex flex-col">
+                            <span class="text-[8px] font-black uppercase text-slate-400 tracking-widest">Klasifikasi</span>
+                            <span class="text-[10px] font-bold text-slate-600">{{ $product->category->name ?? 'Tanpa Kategori' }}</span>
+                        </div>
+                        <div class="flex flex-col items-end text-right">
+                            <span class="text-[8px] font-black uppercase text-slate-400 tracking-widest">Ketersediaan</span>
+                            <span class="text-xs font-black {{ $product->stock < 10 ? 'text-red-500' : 'text-emerald-500' }}">{{ $product->stock_display }} Stok</span>
+                        </div>
+                    </div>
+                    @if(auth()->user()->role === 'admin')
+                        <div class="flex gap-2">
+                            <a href="{{ route('products.edit', $product) }}" class="flex-1 py-3 bg-white border border-slate-200 rounded-xl flex items-center justify-center gap-2 text-xs font-bold text-slate-600 hover:bg-slate-50 transition-all">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v12a2 2 0 00-2 2h10a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                                Edit
+                            </a>
+                            <form action="{{ route('products.destroy', $product) }}" method="POST" class="flex-1" onsubmit="return confirm('Arsip produk ini?')">
+                                @csrf @method('DELETE')
+                                <button type="submit" class="w-full py-3 bg-white border border-slate-200 rounded-xl flex items-center justify-center gap-2 text-xs font-bold text-red-500 hover:bg-red-50 transition-all">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                    Hapus
+                                </button>
+                            </form>
+                        </div>
+                    @else
+                        <div class="w-full py-2 bg-slate-50 border border-slate-100 rounded-xl text-center">
+                            <span class="text-[9px] font-black uppercase text-slate-300 italic tracking-widest">Informasi Terkunci</span>
+                        </div>
+                    @endif
+                </div>
+            @empty
+                <div class="px-8 py-20 text-center">
+                    <p class="text-slate-500 text-sm font-bold">Katalog Kosong</p>
+                </div>
+            @endforelse
+        </div>
+    </div>
     </div>
 </div>
 @endsection

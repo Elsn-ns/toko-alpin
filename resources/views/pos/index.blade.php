@@ -26,11 +26,11 @@
         </div>
 
         <!-- Product Grid -->
-        <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
             @foreach($products as $product)
                 <div class="relative group h-full">
                     <button 
-                        class="w-full h-full glass-card p-6 flex flex-col items-center text-center space-y-4 hover:bg-white hover:-translate-y-1 hover:border-indigo-200 transition-all duration-500 border-b-4 border-slate-100 hover:shadow-2xl hover:shadow-indigo-600/10"
+                        class="w-full h-full glass-card p-4 md:p-6 flex flex-col items-center text-center space-y-3 md:space-y-4 hover:bg-white hover:-translate-y-1 hover:border-indigo-200 transition-all duration-500 border-b-4 border-slate-100 hover:shadow-2xl hover:shadow-indigo-600/10"
                         :class="{'opacity-40 grayscale': {{ $product->stock }} == 0}"
                         @click="addToCart({ 
                             id: {{ $product->id }}, 
@@ -51,13 +51,13 @@
                             @endif
                         </div>
                         <div class="space-y-1">
-                            <p class="font-black text-slate-900 group-hover:text-indigo-600 transition-colors truncate w-32 tracking-tight">{{ $product->name }}</p>
+                            <p class="font-black text-slate-900 group-hover:text-indigo-600 transition-colors truncate w-24 md:w-32 tracking-tight text-sm md:text-base">{{ $product->name }}</p>
                             <div class="flex flex-col gap-0.5">
-                                <p class="text-xs font-bold text-slate-400">
+                                <p class="text-[10px] md:text-xs font-bold text-slate-400">
                                     Rp {{ number_format($product->price, 0, ',', '.') }}
                                 </p>
                                 @if($product->price_pack)
-                                    <p class="text-[9px] font-black text-indigo-500 uppercase tracking-widest">
+                                    <p class="text-[8px] md:text-[9px] font-black text-indigo-500 uppercase tracking-widest">
                                         Pack: Rp {{ number_format($product->price_pack, 0, ',', '.') }}
                                     </p>
                                 @endif
@@ -96,10 +96,10 @@
     <div class="w-full lg:w-[420px] shrink-0">
         <div class="glass-card flex flex-col h-fit lg:max-h-[85vh] sticky top-28 shadow-2xl shadow-slate-200/50 border border-white overflow-hidden bg-white/80 backdrop-blur-2xl">
             <!-- Sidebar Header -->
-            <div class="p-8 border-b border-slate-50 flex justify-between items-center bg-slate-50/50">
+            <div class="p-6 md:p-8 border-b border-slate-50 flex justify-between items-center bg-slate-50/50">
                 <div>
-                    <h2 class="text-2xl font-black text-slate-900 tracking-tight">Keranjang <span class="text-indigo-600">Aktif</span></h2>
-                    <p class="text-slate-400 text-xs font-bold uppercase tracking-widest mt-1">Node Transaksi 01</p>
+                    <h2 class="text-xl md:text-2xl font-black text-slate-900 tracking-tight">Keranjang <span class="text-indigo-600">Aktif</span></h2>
+                    <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mt-1">Node Transaksi 01</p>
                 </div>
                 <button @click="cart = []" class="p-3 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-2xl transition-all active:scale-90" title="Kosongkan Keranjang">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>

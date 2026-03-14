@@ -5,7 +5,7 @@
     <!-- Header & Search -->
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
         <div class="max-w-xl">
-            <h1 class="text-5xl font-black tracking-tight text-slate-900 leading-tight">
+            <h1 class="text-3xl md:text-5xl font-black tracking-tight text-slate-900 leading-tight">
                 Etalase <span class="text-indigo-600">Produk</span>
             </h1>
         </div>
@@ -16,10 +16,10 @@
                        name="search" 
                        value="{{ request('search') }}"
                        placeholder="Cari produk..." 
-                       class="input-modern !py-5 !pl-20 pr-16 !rounded-3xl shadow-xl shadow-slate-200/40 group-focus-within:shadow-indigo-600/10 transition-all duration-500">
+                       class="input-modern !py-4 md:!py-5 !pl-16 md:!pl-20 pr-12 md:pr-16 !rounded-2xl md:!rounded-3xl shadow-xl shadow-slate-200/40 group-focus-within:shadow-indigo-600/10 transition-all duration-500">
                 
-                <div class="absolute left-6 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-indigo-600 transition-colors duration-500">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="absolute left-5 md:left-6 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-indigo-600 transition-colors duration-500">
+                    <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                     </svg>
                 </div>

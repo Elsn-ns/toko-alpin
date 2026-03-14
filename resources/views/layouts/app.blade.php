@@ -18,8 +18,8 @@
 </head>
 <body class="min-h-screen flex flex-col bg-slate-50 text-slate-900 selection:bg-indigo-100 selection:text-indigo-700">
     <!-- Navbar -->
-    <div class="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-7xl">
-        <nav class="glass-card px-8 py-4 flex items-center justify-between border-white/40 shadow-2xl shadow-indigo-500/5">
+    <div x-data="{ mobileMenuOpen: false }" class="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-7xl">
+        <nav class="glass-card px-6 md:px-8 py-4 flex items-center justify-between border-white/40 shadow-2xl shadow-indigo-500/5">
             <div class="flex items-center gap-12">
                 <a href="{{ route('etalase.index') }}" class="text-xl font-black tracking-tighter flex items-center gap-2 group">
                     <div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-white rotate-3 group-hover:rotate-0 transition-transform">
@@ -28,7 +28,8 @@
                     <span>TOKO<span class="text-indigo-600">ALPIN</span></span>
                 </a>
 
-                <div class="hidden md:flex items-center gap-8">
+                <!-- Desktop Menu -->
+                <div class="hidden lg:flex items-center gap-8">
                     <a href="{{ route('etalase.index') }}" class="{{ request()->routeIs('etalase.*') ? 'nav-link nav-link-active' : 'nav-link' }}">Etalase</a>
                     @auth
                         @if(auth()->user()->role === 'admin')
@@ -52,11 +53,12 @@
                 </div>
             </div>
 
-            <div class="flex items-center gap-4">
+            <div class="flex items-center gap-2 md:gap-4">
                 @auth
+                    <!-- User Profile Dropdown -->
                     <div x-data="{ open: false }" class="relative">
-                        <button @click="open = !open" class="flex items-center gap-3 bg-slate-100/80 hover:bg-slate-200/80 px-4 py-2 rounded-2xl transition-all border border-slate-200/50">
-                            <div class="w-8 h-8 rounded-xl bg-indigo-600 flex items-center justify-center text-white text-xs font-bold font-heading">
+                        <button @click="open = !open" class="flex items-center gap-2 md:gap-3 bg-slate-100/80 hover:bg-slate-200/80 px-3 md:px-4 py-2 rounded-2xl transition-all border border-slate-200/50">
+                            <div class="w-7 h-7 md:w-8 md:h-8 rounded-xl bg-indigo-600 flex items-center justify-center text-white text-xs font-bold font-heading">
                                 {{ substr(auth()->user()->name, 0, 1) }}
                             </div>
                             <span class="text-sm font-semibold text-slate-700 hidden sm:inline">{{ auth()->user()->name }}</span>
@@ -100,11 +102,49 @@
                     </div>
                 @else
                     <div class="flex items-center gap-2">
-                        <a href="{{ route('login') }}" class="btn-primary !py-2.5">Masuk Akun</a>
+                        <a href="{{ route('login') }}" class="btn-primary !py-2.5 !px-5 text-sm">Masuk Akun</a>
                     </div>
                 @endauth
+
+                <!-- Mobile Menu Button -->
+                <button @click="mobileMenuOpen = !mobileMenuOpen" class="lg:hidden p-2.5 bg-slate-100 rounded-2xl text-slate-600 hover:bg-indigo-50 hover:text-indigo-600 transition-all active:scale-95">
+                    <svg x-show="!mobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                    <svg x-show="mobileMenuOpen" x-cloak class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
             </div>
         </nav>
+
+        <!-- Mobile Menu Dropdown -->
+        <div x-show="mobileMenuOpen" 
+             @click.away="mobileMenuOpen = false"
+             x-cloak
+             x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="opacity-0 -translate-y-4"
+             x-transition:enter-end="opacity-100 translate-y-0"
+             class="lg:hidden absolute top-full left-0 w-full mt-4 glass-card border-slate-200/50 bg-white shadow-2xl overflow-hidden py-4">
+            <div class="flex flex-col px-4 gap-2">
+                <a href="{{ route('etalase.index') }}" class="mobile-nav-link {{ request()->routeIs('etalase.*') ? 'mobile-nav-link-active' : '' }}">Etalase Produk</a>
+                @auth
+                    @if(auth()->user()->role === 'admin')
+                        <a href="{{ route('dashboard') }}" class="mobile-nav-link {{ request()->routeIs('dashboard') ? 'mobile-nav-link-active' : '' }}">Analistik Bisnis</a>
+                    @endif
+                    @if(auth()->user()->isStaff())
+                        <a href="{{ route('products.index') }}" class="mobile-nav-link {{ request()->routeIs('products.*') ? 'mobile-nav-link-active' : '' }}">Inventori Stok</a>
+                        <a href="{{ route('pos.index') }}" class="mobile-nav-link {{ request()->routeIs('pos.*') ? 'mobile-nav-link-active' : '' }}">Sistem Kasir</a>
+                        <a href="{{ route('transactions.history') }}" class="mobile-nav-link {{ request()->routeIs('transactions.history') ? 'mobile-nav-link-active' : '' }}">Riwayat Penjualan</a>
+                        <a href="{{ route('chat.inbox') }}" class="mobile-nav-link {{ request()->routeIs('chat.inbox*') ? 'mobile-nav-link-active' : '' }}">
+                            Kotak Masuk Chat
+                            @php $unread = \App\Models\Message::where('sender_id', '!=', auth()->id())->where('is_read', false)->count(); @endphp
+                            @if($unread > 0)
+                                <span class="bg-indigo-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full ml-auto">{{ $unread }}</span>
+                            @endif
+                        </a>
+                    @else
+                        <a href="{{ route('chat.customer') }}" class="mobile-nav-link {{ request()->routeIs('chat.customer') ? 'mobile-nav-link-active' : '' }}">Layanan Bantuan</a>
+                    @endif
+                @endauth
+            </div>
+        </div>
     </div>
 
     <main class="flex-1 max-w-7xl mx-auto px-6 pt-32 pb-20">
