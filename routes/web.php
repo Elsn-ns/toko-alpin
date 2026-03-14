@@ -10,17 +10,17 @@ use App\Http\Controllers\EtalaseController;
 use App\Http\Controllers\ChatController;
 
 Route::get('/', function () {
-    return redirect()->route('login');
+    return redirect()->route('etalase.index');
 });
+
+// Store Showcase (Public Access)
+Route::get('/etalase', [EtalaseController::class, 'index'])->name('etalase.index');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     
     // Customer Chat Route
     Route::get('/chat', [ChatController::class, 'customerIndex'])->name('chat.customer');
     Route::post('/chat/send', [ChatController::class, 'sendMessage'])->name('chat.send');
-
-    // Store Showcase
-    Route::get('/etalase', [EtalaseController::class, 'index'])->name('etalase.index');
 
     // Profile Management
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
