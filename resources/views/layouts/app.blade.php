@@ -105,62 +105,66 @@
                 @endauth
 
                 <!-- Mobile Menu Button -->
-                <button @click="mobileMenuOpen = !mobileMenuOpen" class="md:hidden w-10 h-10 flex items-center justify-center bg-slate-100/80 rounded-xl text-slate-600 hover:bg-indigo-600 hover:text-white transition-all">
-                    <svg x-show="!mobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
-                    <svg x-show="mobileMenuOpen" x-cloak class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
-                </button>
+                <div class="md:hidden">
+                    <button @click="mobileMenuOpen = !mobileMenuOpen" class="w-10 h-10 flex items-center justify-center bg-slate-100/80 rounded-xl text-slate-600 hover:bg-indigo-600 hover:text-white transition-all">
+                        <svg x-show="!mobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                        <svg x-show="mobileMenuOpen" x-cloak class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
             </div>
         </nav>
 
         <!-- Mobile Menu (Slide-down) -->
-        <div x-show="mobileMenuOpen" 
-             @click.away="mobileMenuOpen = false"
-             x-cloak
-             x-transition:enter="transition ease-out duration-300"
-             x-transition:enter-start="opacity-0 -translate-y-4"
-             x-transition:enter-end="opacity-100 translate-y-0"
-             class="md:hidden mt-3 glass-card border-slate-200/50 overflow-hidden bg-white/90 backdrop-blur-2xl shadow-2xl p-4">
-            <div class="flex flex-col gap-2">
-                <a href="{{ route('etalase.index') }}" class="flex items-center gap-3 p-4 rounded-2xl {{ request()->routeIs('etalase.*') ? 'bg-indigo-50 text-indigo-600' : 'text-slate-600 hover:bg-slate-50' }} font-bold transition-colors">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
-                    Etalase
-                </a>
-                @auth
-                    @if(auth()->user()->role === 'admin')
-                        <a href="{{ route('dashboard') }}" class="flex items-center gap-3 p-4 rounded-2xl {{ request()->routeIs('dashboard') ? 'bg-indigo-50 text-indigo-600' : 'text-slate-600 hover:bg-slate-50' }} font-bold transition-colors">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
-                            Analistik
-                        </a>
-                    @endif
-                    @if(auth()->user()->isStaff())
-                        <a href="{{ route('products.index') }}" class="flex items-center gap-3 p-4 rounded-2xl {{ request()->routeIs('products.*') ? 'bg-indigo-50 text-indigo-600' : 'text-slate-600 hover:bg-slate-50' }} font-bold transition-colors">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
-                            Inventori
-                        </a>
-                        <a href="{{ route('pos.index') }}" class="flex items-center gap-3 p-4 rounded-2xl {{ request()->routeIs('pos.*') ? 'bg-indigo-50 text-indigo-600' : 'text-slate-600 hover:bg-slate-50' }} font-bold transition-colors">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 00-2 2z"></path></svg>
-                            Sistem Kasir
-                        </a>
-                        <a href="{{ route('transactions.history') }}" class="flex items-center gap-3 p-4 rounded-2xl {{ request()->routeIs('transactions.history') ? 'bg-indigo-50 text-indigo-600' : 'text-slate-600 hover:bg-slate-50' }} font-bold transition-colors">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                            Riwayat
-                        </a>
-                        <a href="{{ route('chat.inbox') }}" class="flex items-center justify-between p-4 rounded-2xl {{ request()->routeIs('chat.inbox*') ? 'bg-indigo-50 text-indigo-600' : 'text-slate-600 hover:bg-slate-50' }} font-bold transition-colors">
-                            <div class="flex items-center gap-3">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
-                                Kotak Masuk
-                            </div>
-                            @if($unread > 0)
-                                <span class="px-2.5 py-1 bg-indigo-600 text-white text-[10px] rounded-lg">{{ $unread }}</span>
-                            @endif
-                        </a>
-                    @else
-                        <a href="{{ route('chat.customer') }}" class="flex items-center gap-3 p-4 rounded-2xl {{ request()->routeIs('chat.customer') ? 'bg-indigo-50 text-indigo-600' : 'text-slate-600 hover:bg-slate-50' }} font-bold transition-colors">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                            Bantuan
-                        </a>
-                    @endif
-                @endauth
+        <div class="md:hidden">
+            <div x-show="mobileMenuOpen" 
+                 @click.away="mobileMenuOpen = false"
+                 x-cloak
+                 x-transition:enter="transition ease-out duration-300"
+                 x-transition:enter-start="opacity-0 -translate-y-4"
+                 x-transition:enter-end="opacity-100 translate-y-0"
+                 class="mt-3 glass-card border-slate-200/50 overflow-hidden bg-white/90 backdrop-blur-2xl shadow-2xl p-4">
+                <div class="flex flex-col gap-2">
+                    <a href="{{ route('etalase.index') }}" class="flex items-center gap-3 p-4 rounded-2xl {{ request()->routeIs('etalase.*') ? 'bg-indigo-50 text-indigo-600' : 'text-slate-600 hover:bg-slate-50' }} font-bold transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                        Etalase
+                    </a>
+                    @auth
+                        @if(auth()->user()->role === 'admin')
+                            <a href="{{ route('dashboard') }}" class="flex items-center gap-3 p-4 rounded-2xl {{ request()->routeIs('dashboard') ? 'bg-indigo-50 text-indigo-600' : 'text-slate-600 hover:bg-slate-50' }} font-bold transition-colors">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                                Analistik
+                            </a>
+                        @endif
+                        @if(auth()->user()->isStaff())
+                            <a href="{{ route('products.index') }}" class="flex items-center gap-3 p-4 rounded-2xl {{ request()->routeIs('products.*') ? 'bg-indigo-50 text-indigo-600' : 'text-slate-600 hover:bg-slate-50' }} font-bold transition-colors">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+                                Inventori
+                            </a>
+                            <a href="{{ route('pos.index') }}" class="flex items-center gap-3 p-4 rounded-2xl {{ request()->routeIs('pos.*') ? 'bg-indigo-50 text-indigo-600' : 'text-slate-600 hover:bg-slate-50' }} font-bold transition-colors">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 00-2 2z"></path></svg>
+                                Sistem Kasir
+                            </a>
+                            <a href="{{ route('transactions.history') }}" class="flex items-center gap-3 p-4 rounded-2xl {{ request()->routeIs('transactions.history') ? 'bg-indigo-50 text-indigo-600' : 'text-slate-600 hover:bg-slate-50' }} font-bold transition-colors">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                Riwayat
+                            </a>
+                            <a href="{{ route('chat.inbox') }}" class="flex items-center justify-between p-4 rounded-2xl {{ request()->routeIs('chat.inbox*') ? 'bg-indigo-50 text-indigo-600' : 'text-slate-600 hover:bg-slate-50' }} font-bold transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
+                                    Kotak Masuk
+                                </div>
+                                @if($unread > 0)
+                                    <span class="px-2.5 py-1 bg-indigo-600 text-white text-[10px] rounded-lg">{{ $unread }}</span>
+                                @endif
+                            </a>
+                        @else
+                            <a href="{{ route('chat.customer') }}" class="flex items-center gap-3 p-4 rounded-2xl {{ request()->routeIs('chat.customer') ? 'bg-indigo-50 text-indigo-600' : 'text-slate-600 hover:bg-slate-50' }} font-bold transition-colors">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                                Bantuan
+                            </a>
+                        @endif
+                    @endauth
+                </div>
             </div>
         </div>
     </div>
