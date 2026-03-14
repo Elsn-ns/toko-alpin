@@ -80,10 +80,10 @@
                             </td>
                             <td class="px-8 py-6 text-center">
                                 <div class="flex flex-col items-center gap-1">
-                                    <span class="text-xl font-black {{ $product->stock < 10 ? 'text-red-500' : 'text-emerald-500' }}">
-                                        {{ $product->stock }}
+                                    <span class="text-base font-black {{ $product->stock < 10 ? 'text-red-500' : 'text-emerald-500' }} whitespace-nowrap">
+                                        {{ $product->stock_display }}
                                     </span>
-                                    <span class="text-[10px] font-black uppercase tracking-widest text-slate-300">Units</span>
+                                    <span class="text-[10px] font-black uppercase tracking-widest text-slate-300">Availability</span>
                                 </div>
                             </td>
                             <td class="px-8 py-6">

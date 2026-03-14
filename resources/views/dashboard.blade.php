@@ -128,7 +128,7 @@
                     <div class="flex items-center justify-between p-5 bg-red-50/50 border border-red-100 rounded-[28px] group hover:bg-white hover:shadow-xl transition-all duration-300">
                         <div class="space-y-1">
                             <p class="font-bold text-slate-900 leading-none group-hover:text-indigo-600 transition-colors">{{ $product->name }}</p>
-                            <p class="text-[10px] font-black uppercase tracking-widest text-red-400">Low Stock: <span class="text-lg leading-none">{{ $product->stock }}</span></p>
+                            <p class="text-[10px] font-black uppercase tracking-widest text-red-400">Stock: <span class="text-sm font-black leading-none whitespace-nowrap">{{ $product->stock_display }}</span></p>
                         </div>
                         <a href="{{ route('products.edit', $product) }}" class="w-10 h-10 rounded-2xl bg-white border border-slate-200 flex items-center justify-center text-slate-400 hover:text-indigo-600 hover:border-indigo-200 transition-all">
                             <svg class="w-5 h-5 font-bold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
