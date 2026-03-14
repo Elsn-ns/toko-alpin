@@ -3,10 +3,10 @@
 @layer base {
     :root {
         --bg-main: #f8fafc; /* Slate 50 */
-        --card-bg: rgba(255, 255, 255, 0.7);
+        --card-bg: rgba(255, 255, 255, 0.85); /* Increased opacity for better fallback */
         --primary: #4f46e5; /* Indigo 600 */
         --primary-soft: #eef2ff; /* Indigo 50 */
-        --text-main: #1e293b; /* Slate 800 */
+        --text-main: #0f172a; /* Slate 900 - Darker for better contrast */
         --text-muted: #64748b; /* Slate 500 */
         --radius-lg: 24px;
         --radius-md: 16px;
@@ -19,10 +19,10 @@
     body {
         background-color: var(--bg-main);
         background-image: 
-            radial-gradient(at 0% 0%, rgba(79, 70, 229, 0.03) 0px, transparent 50%),
-            radial-gradient(at 100% 100%, rgba(168, 85, 247, 0.03) 0px, transparent 50%);
+            radial-gradient(at 0% 0%, rgba(79, 70, 229, 0.05) 0px, transparent 50%),
+            radial-gradient(at 100% 100%, rgba(168, 85, 247, 0.05) 0px, transparent 50%);
         color: var(--text-main);
-        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
         min-height: 100vh;
         -webkit-font-smoothing: antialiased;
     }
@@ -30,9 +30,9 @@
 
 .glass-card {
     background: var(--card-bg);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.7);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-soft);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
