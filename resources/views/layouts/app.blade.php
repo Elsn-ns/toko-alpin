@@ -102,7 +102,7 @@
                     </div>
                 @else
                     <div class="flex items-center gap-2">
-                        <a href="{{ route('login') }}" class="btn-primary !py-2.5 !px-5 text-sm">Masuk Akun</a>
+                        <a href="{{ route('login') }}" class="btn-primary !py-2.5 !px-5 text-sm">Login</a>
                     </div>
                 @endauth
 
