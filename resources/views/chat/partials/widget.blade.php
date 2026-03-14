@@ -1,11 +1,11 @@
 @auth
     <div x-data="chatWidget()" 
-         class="fixed bottom-10 right-10 z-[100]"
+         class="fixed bottom-6 right-6 md:bottom-10 md:right-10 z-[100]"
          x-cloak>
         
         <!-- Modern Floating Bubble -->
         <button @click="toggle()" 
-                class="w-16 h-16 bg-slate-900 rounded-[24px] shadow-2xl flex items-center justify-center hover:bg-black transition-all hover:scale-110 active:scale-95 group relative border border-slate-800">
+                class="w-14 h-14 md:w-16 md:h-16 bg-slate-900 rounded-[22px] md:rounded-[24px] shadow-2xl flex items-center justify-center hover:bg-black transition-all hover:scale-110 active:scale-95 group relative border border-slate-800">
             <svg x-show="!isOpen" class="w-7 h-7 text-white group-hover:rotate-12 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
             </svg>
@@ -27,10 +27,10 @@
              x-transition:leave="transition ease-in duration-300 transform"
              x-transition:leave-start="opacity-100 translate-y-0 scale-100 rotate-0"
              x-transition:leave-end="opacity-0 translate-y-12 scale-90 rotate-3"
-             class="absolute bottom-24 right-0 w-[420px] h-[650px] glass-card shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)] flex flex-col overflow-hidden border border-white bg-white/95 backdrop-blur-2xl">
+             class="absolute bottom-20 md:bottom-24 right-0 w-[calc(100vw-3rem)] sm:w-[420px] h-[70vh] sm:h-[650px] glass-card shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)] flex flex-col overflow-hidden border border-white bg-white/95 backdrop-blur-2xl">
             
             <!-- Window Header (Dynamic) -->
-            <div class="p-6 border-b border-slate-50 flex justify-between items-center bg-slate-50/50">
+            <div class="p-4 md:p-6 border-b border-slate-50 flex justify-between items-center bg-slate-50/50">
                 <div class="flex items-center gap-4">
                     <template x-if="view === 'list'">
                         <div class="flex items-center gap-3">
@@ -65,7 +65,7 @@
             <div x-show="view === 'list'" class="flex-1 overflow-y-auto custom-scrollbar bg-slate-50/30">
                 <template x-for="conv in conversations" :key="conv.id">
                     <button @click="openChat(conv)" 
-                            class="w-full text-left p-6 border-b border-slate-50 transition-all hover:bg-white flex justify-between items-center group">
+                            class="w-full text-left p-4 md:p-6 border-b border-slate-50 transition-all hover:bg-white flex justify-between items-center group">
                         <div class="flex items-center gap-4 overflow-hidden">
                             <div class="w-12 h-12 bg-slate-100 rounded-2xl flex items-center justify-center text-slate-400 font-black text-sm group-hover:bg-indigo-600 group-hover:text-white transition-all" x-text="conv.initials"></div>
                             <div class="overflow-hidden">
@@ -91,7 +91,7 @@
 
             <!-- Chat View -->
             <div x-show="view === 'chat'" class="flex-1 flex flex-col min-h-0">
-                <div id="widgetMessages" class="flex-1 overflow-y-auto p-8 space-y-6 bg-slate-50/30 custom-scrollbar">
+                <div id="widgetMessages" class="flex-1 overflow-y-auto p-5 md:p-8 space-y-4 md:space-y-6 bg-slate-50/30 custom-scrollbar">
                     <template x-for="msg in currentMessages" :key="msg.id">
                         <div class="flex" :class="msg.is_staff ? 'justify-end' : 'justify-start'">
                             <div class="max-w-[85%] space-y-1.5">
@@ -116,7 +116,7 @@
                 </div>
 
                 <!-- Input Interface -->
-                <div class="p-6 bg-white border-t border-slate-50">
+                <div class="p-4 md:p-6 bg-white border-t border-slate-50">
                     <form @submit.prevent="sendMessage()" class="flex gap-3">
                         <div class="flex-1 relative">
                             <textarea x-model="newMessage" 
@@ -147,8 +147,8 @@
                 currentMessages: @json($messages ?? []),
                 activeConversationId: {{ $conversation->id ?? 'null' }},
                 activeCustomer: {
-                    name: '{{ $conversation->customer->name ?? '' }}',
-                    initials: '{{ substr($conversation->customer->name ?? 'G', 0, 1) }}'
+                    name: '{{ $conversation?->customer?->name ?? '' }}',
+                    initials: '{{ substr($conversation?->customer?->name ?? 'G', 0, 1) }}'
                 },
                 unreadCount: {{ $unread ?? 0 }},
                 newMessage: '',
