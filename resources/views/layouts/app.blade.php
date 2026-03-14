@@ -19,7 +19,7 @@
 <body class="min-h-screen flex flex-col bg-slate-50 text-slate-900 selection:bg-indigo-100 selection:text-indigo-700">
     <!-- Navbar -->
     <div x-data="{ mobileMenuOpen: false }" class="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-7xl">
-        <nav class="glass-card px-6 md:px-8 py-4 flex items-center justify-between border-white shadow-2xl shadow-indigo-500/5">
+        <nav class="bg-white px-6 md:px-8 py-4 flex items-center justify-between border border-slate-200 shadow-xl shadow-indigo-500/5 rounded-[28px]">
             <div class="flex items-center gap-12">
                 <a href="{{ route('etalase.index') }}" class="text-xl font-black tracking-tighter flex items-center gap-2 group">
                     <div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-white rotate-3 group-hover:rotate-0 transition-transform">
@@ -71,7 +71,7 @@
                              x-transition:enter="transition ease-out duration-200"
                              x-transition:enter-start="opacity-0 scale-95 translate-y-2"
                              x-transition:enter-end="opacity-100 scale-100 translate-y-0"
-                             class="absolute right-0 mt-3 w-56 glass-card border-slate-200/50 overflow-hidden bg-white shadow-2xl">
+                             class="absolute right-0 mt-3 w-56 bg-white border border-slate-200 overflow-hidden shadow-2xl rounded-[24px]">
                             <div class="p-4 border-b border-slate-100">
                                 <p class="text-[10px] font-black uppercase tracking-widest text-slate-400">Jabatan Akun</p>
                                 <p class="text-xs font-bold text-indigo-600">
@@ -121,7 +121,7 @@
              x-transition:enter="transition ease-out duration-300"
              x-transition:enter-start="opacity-0 -translate-y-4"
              x-transition:enter-end="opacity-100 translate-y-0"
-             class="lg:hidden absolute top-full left-0 w-full mt-4 glass-card border-slate-200/50 bg-white shadow-2xl overflow-hidden py-4">
+             class="lg:hidden absolute top-full left-0 w-full mt-4 bg-white border border-slate-200 shadow-2xl overflow-hidden py-4 rounded-[28px]">
             <div class="flex flex-col px-4 gap-2">
                 <a href="{{ route('etalase.index') }}" class="mobile-nav-link {{ request()->routeIs('etalase.*') ? 'mobile-nav-link-active' : '' }}">Etalase Produk</a>
                 @auth
