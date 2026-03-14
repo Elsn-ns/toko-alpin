@@ -165,7 +165,7 @@
         </div>
     </div>
 
-    <main class="flex-1 max-w-7xl mx-auto px-6 pt-24 md:pt-32 pb-20">
+    <main class="flex-1 max-w-7xl mx-auto px-6 pt-28 md:pt-32 pb-20">
         <!-- System Alerts -->
         @if(session('success'))
             <div class="mb-8 p-6 bg-emerald-50 border border-emerald-100 rounded-[28px] flex items-center gap-4 animate-in fade-in slide-in-from-top-4 duration-500">
