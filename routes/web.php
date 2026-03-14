@@ -43,6 +43,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Staff Inbox
         Route::get('/inbox', [ChatController::class, 'staffInbox'])->name('chat.inbox');
         Route::get('/inbox/{conversation}', [ChatController::class, 'staffShow'])->name('chat.inbox.show');
+        Route::get('/api/conversations', [ChatController::class, 'getConversationsApi'])->name('chat.api.conversations');
         Route::get('/api/messages/{conversation}', [ChatController::class, 'getMessagesApi'])->name('chat.api.messages');
         
         // Admin Only Routes

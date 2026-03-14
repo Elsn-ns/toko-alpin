@@ -145,7 +145,7 @@
                 view: '{{ auth()->user()->isStaff() ? 'list' : 'chat' }}',
                 conversations: @json($conversations ?? []),
                 currentMessages: @json($messages ?? []),
-                activeConversationId: {{ $conversation->id ?? 'null' }},
+                activeConversationId: {{ $conversation?->id ?? 'null' }},
                 activeCustomer: {
                     name: '{{ $conversation?->customer?->name ?? '' }}',
                     initials: '{{ substr($conversation?->customer?->name ?? 'G', 0, 1) }}'
@@ -153,6 +153,7 @@
                 unreadCount: {{ $unread ?? 0 }},
                 newMessage: '',
                 isLoading: false,
+                pollInterval: null,
 
                 init() {
                     if (this.isStaff) {
@@ -165,6 +166,40 @@
                             unread: c.messages.filter(m => !m.is_read && m.sender_id != {{ auth()->id() }}).length
                         }));
                         this.unreadCount = this.conversations.reduce((acc, c) => acc + c.unread, 0);
+                    }
+
+                    // Start background polling every 5 seconds
+                    this.pollInterval = setInterval(() => this.fetchUpdates(), 5000);
+                },
+
+                fetchUpdates() {
+                    // 1. Always update global unread count and current chat if open
+                    if (this.activeConversationId) {
+                        fetch(`/api/messages/${this.activeConversationId}`)
+                            .then(res => res.json())
+                            .then(data => {
+                                if (data.status === 'success') {
+                                    const oldLen = this.currentMessages.length;
+                                    this.currentMessages = data.messages;
+                                    this.unreadCount = data.unreadCount;
+                                    
+                                    if (this.currentMessages.length > oldLen && this.isOpen) {
+                                        this.scrollToBottom();
+                                    }
+                                }
+                            });
+                    }
+
+                    // 2. If staff is in list view, update the whole list
+                    if (this.isStaff) {
+                        fetch('{{ route('chat.api.conversations') }}')
+                            .then(res => res.json())
+                            .then(data => {
+                                if (data.status === 'success') {
+                                    this.conversations = data.conversations;
+                                    this.unreadCount = data.unreadTotal;
+                                }
+                            });
                     }
                 },
 

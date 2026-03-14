@@ -84,9 +84,21 @@ class ChatController extends Controller
             $conversation->messages()->where('sender_id', '!=', auth()->id())->where('is_read', false)->update(['is_read' => true]);
         }
 
+        $unreadCount = 0;
+        if (auth()->user()->isStaff()) {
+            $unreadCount = Message::whereHas('conversation')
+                ->where('sender_id', '!=', auth()->id())
+                ->where('is_read', false)
+                ->count();
+        } else {
+            $conv = Conversation::where('customer_id', auth()->id())->first();
+            $unreadCount = $conv ? $conv->messages()->where('sender_id', '!=', auth()->id())->where('is_read', false)->count() : 0;
+        }
+
         return response()->json([
             'status' => 'success',
             'customer' => $conversation->customer,
+            'unreadCount' => $unreadCount,
             'messages' => $conversation->messages()->with('sender')->get()->map(function($msg) {
                 return [
                     'id' => $msg->id,
@@ -95,6 +107,33 @@ class ChatController extends Controller
                     'is_staff' => $msg->sender->isStaff(),
                     'sender_name' => $msg->sender->name,
                     'time' => $msg->created_at->format('g:i A'),
+                ];
+            })
+        ]);
+    }
+
+    public function getConversationsApi()
+    {
+        $conversations = Conversation::with(['customer', 'messages' => function($q) {
+            $q->latest()->take(1);
+        }])->orderBy('last_message_at', 'desc')->get();
+
+        $unreadTotal = Message::whereHas('conversation')
+            ->where('sender_id', '!=', auth()->id())
+            ->where('is_read', false)
+            ->count();
+
+        return response()->json([
+            'status' => 'success',
+            'unreadTotal' => $unreadTotal,
+            'conversations' => $conversations->map(function($c) {
+                return [
+                    'id' => $c->id,
+                    'customer_name' => $c->customer->name,
+                    'initials' => substr($c->customer->name, 0, 1),
+                    'last_message' => $c->messages->first()?->body ?? 'Start conversation...',
+                    'time' => $c->last_message_at->format('g:i A'),
+                    'unread' => $c->messages()->where('sender_id', '!=', auth()->id())->where('is_read', false)->count()
                 ];
             })
         ]);
