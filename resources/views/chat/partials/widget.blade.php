@@ -1,21 +1,21 @@
 @auth
     <div x-data="chatWidget()" 
-         class="fixed bottom-4 right-4 md:bottom-10 md:right-10 z-[100]"
+         class="fixed bottom-10 right-10 z-[100]"
          x-cloak>
         
         <!-- Modern Floating Bubble -->
         <button @click="toggle()" 
-                class="w-14 h-14 md:w-16 md:h-16 bg-slate-900 rounded-[22px] md:rounded-[24px] shadow-2xl flex items-center justify-center hover:bg-black transition-all hover:scale-110 active:scale-95 group relative border border-slate-800">
-            <svg x-show="!isOpen" class="w-6 h-6 md:w-7 md:h-7 text-white group-hover:rotate-12 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                class="w-16 h-16 bg-slate-900 rounded-[24px] shadow-2xl flex items-center justify-center hover:bg-black transition-all hover:scale-110 active:scale-95 group relative border border-slate-800">
+            <svg x-show="!isOpen" class="w-7 h-7 text-white group-hover:rotate-12 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
             </svg>
-            <svg x-show="isOpen" class="w-6 h-6 md:w-7 md:h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg x-show="isOpen" class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path>
             </svg>
             
             <!-- Global Counter Badge -->
             <template x-if="unreadCount > 0">
-                <span class="absolute -top-1 -right-1 md:-top-2 md:-right-2 bg-indigo-600 text-white text-[9px] md:text-[10px] font-black h-5 w-5 md:h-6 md:w-6 flex items-center justify-center rounded-full border-[3px] md:border-4 border-white shadow-lg animate-bounce" x-text="unreadCount"></span>
+                <span class="absolute -top-2 -right-2 bg-indigo-600 text-white text-[10px] font-black h-6 w-6 flex items-center justify-center rounded-full border-4 border-white shadow-lg animate-bounce" x-text="unreadCount"></span>
             </template>
         </button>
 
@@ -27,7 +27,7 @@
              x-transition:leave="transition ease-in duration-300 transform"
              x-transition:leave-start="opacity-100 translate-y-0 scale-100 rotate-0"
              x-transition:leave-end="opacity-0 translate-y-12 scale-90 rotate-3"
-             class="absolute bottom-20 md:bottom-24 right-0 w-[calc(100vw-32px)] sm:w-[420px] h-[550px] md:h-[650px] max-h-[70vh] md:max-h-none glass-card shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)] flex flex-col overflow-hidden border border-white bg-white/95 backdrop-blur-2xl">
+             class="absolute bottom-24 right-0 w-[420px] h-[650px] glass-card shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)] flex flex-col overflow-hidden border border-white bg-white/95 backdrop-blur-2xl">
             
             <!-- Window Header (Dynamic) -->
             <div class="p-6 border-b border-slate-50 flex justify-between items-center bg-slate-50/50">
