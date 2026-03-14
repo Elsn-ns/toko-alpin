@@ -31,7 +31,7 @@
     @foreach($transaction->details as $detail)
         <div class="bold">{{ $detail->product->name }}</div>
         <div class="flex">
-            <span>{{ $detail->quantity }} x {{ number_format($detail->price, 0) }}</span>
+            <span>{{ $detail->quantity }} {{ $detail->unit_type === 'pack' ? 'Pack' : 'Pcs' }} x {{ number_format($detail->price, 0) }}</span>
             <span>{{ number_format($detail->quantity * $detail->price, 0) }}</span>
         </div>
     @endforeach

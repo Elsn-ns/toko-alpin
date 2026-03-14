@@ -15,7 +15,7 @@
     </style>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-slate-50 text-slate-900 selection:bg-indigo-100 selection:text-indigo-700">
+<body class="min-h-screen flex flex-col bg-slate-50 text-slate-900 selection:bg-indigo-100 selection:text-indigo-700">
     <!-- Navbar -->
     <div class="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-7xl">
         <nav class="glass-card px-8 py-4 flex items-center justify-between border-white/20">
@@ -28,22 +28,24 @@
                 </a>
 
                 <div class="hidden md:flex items-center gap-8">
-                    <a href="{{ route('etalase.index') }}" class="{{ request()->routeIs('etalase.*') ? 'nav-link nav-link-active' : 'nav-link' }}">Store</a>
+                    <a href="{{ route('etalase.index') }}" class="{{ request()->routeIs('etalase.*') ? 'nav-link nav-link-active' : 'nav-link' }}">Etalase</a>
                     @auth
+                        @if(auth()->user()->role === 'admin')
+                            <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'nav-link nav-link-active' : 'nav-link' }}">Analistik</a>
+                        @endif
                         @if(auth()->user()->isStaff())
-                            <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'nav-link nav-link-active' : 'nav-link' }}">Analytics</a>
-                            <a href="{{ route('products.index') }}" class="{{ request()->routeIs('products.*') ? 'nav-link nav-link-active' : 'nav-link' }}">Inventory</a>
-                            <a href="{{ route('pos.index') }}" class="{{ request()->routeIs('pos.*') ? 'nav-link nav-link-active' : 'nav-link' }}">POS System</a>
-                            <a href="{{ route('transactions.history') }}" class="{{ request()->routeIs('transactions.history') ? 'nav-link nav-link-active' : 'nav-link' }}">History</a>
+                            <a href="{{ route('products.index') }}" class="{{ request()->routeIs('products.*') ? 'nav-link nav-link-active' : 'nav-link' }}">Inventori</a>
+                            <a href="{{ route('pos.index') }}" class="{{ request()->routeIs('pos.*') ? 'nav-link nav-link-active' : 'nav-link' }}">Sistem Kasir</a>
+                            <a href="{{ route('transactions.history') }}" class="{{ request()->routeIs('transactions.history') ? 'nav-link nav-link-active' : 'nav-link' }}">Riwayat</a>
                             <a href="{{ route('chat.inbox') }}" class="{{ request()->routeIs('chat.inbox*') ? 'nav-link nav-link-active' : 'nav-link' }}">
-                                Inbox
+                                Kotak Masuk
                                 @php $unread = \App\Models\Message::where('sender_id', '!=', auth()->id())->where('is_read', false)->count(); @endphp
                                 @if($unread > 0)
                                     <span class="ml-1 w-2 h-2 bg-indigo-500 rounded-full inline-block animate-pulse"></span>
                                 @endif
                             </a>
                         @else
-                            <a href="{{ route('chat.customer') }}" class="{{ request()->routeIs('chat.customer') ? 'nav-link nav-link-active' : 'nav-link' }}">Support</a>
+                            <a href="{{ route('chat.customer') }}" class="{{ request()->routeIs('chat.customer') ? 'nav-link nav-link-active' : 'nav-link' }}">Bantuan</a>
                         @endif
                     @endauth
                 </div>
@@ -68,13 +70,18 @@
                              x-transition:enter-end="opacity-100 scale-100 translate-y-0"
                              class="absolute right-0 mt-3 w-56 glass-card border-slate-200/50 overflow-hidden bg-white shadow-2xl">
                             <div class="p-4 border-b border-slate-100">
-                                <p class="text-[10px] font-black uppercase tracking-widest text-slate-400">Account Role</p>
-                                <p class="text-xs font-bold text-indigo-600">{{ ucfirst(auth()->user()->role) }}</p>
+                                <p class="text-[10px] font-black uppercase tracking-widest text-slate-400">Jabatan Akun</p>
+                                <p class="text-xs font-bold text-indigo-600">
+                                    @if(auth()->user()->role === 'admin') Admin
+                                    @elseif(auth()->user()->role === 'staff') Staff
+                                    @else Pelanggan
+                                    @endif
+                                </p>
                             </div>
                             <div class="py-2">
                                 <a href="{{ route('profile.edit') }}" class="flex items-center gap-3 px-4 py-3 hover:bg-slate-50 transition text-sm font-medium text-slate-600">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-                                    Profile Settings
+                                    Pengaturan Profil
                                 </a>
                             </div>
                             <div class="p-2 border-t border-slate-100 bg-slate-50/50">
@@ -84,7 +91,7 @@
                                         <div class="w-8 h-8 rounded-lg bg-red-100 flex items-center justify-center">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
                                         </div>
-                                        Sign Out
+                                        Keluar
                                     </button>
                                 </form>
                             </div>
@@ -92,14 +99,14 @@
                     </div>
                 @else
                     <div class="flex items-center gap-2">
-                        <a href="{{ route('login') }}" class="btn-primary !py-2.5">Login Account</a>
+                        <a href="{{ route('login') }}" class="btn-primary !py-2.5">Masuk Akun</a>
                     </div>
                 @endauth
             </div>
         </nav>
     </div>
 
-    <main class="max-w-7xl mx-auto px-6 pt-32 pb-20">
+    <main class="flex-1 max-w-7xl mx-auto px-6 pt-32 pb-20">
         <!-- System Alerts -->
         @if(session('success'))
             <div class="mb-8 p-6 bg-emerald-50 border border-emerald-100 rounded-[28px] flex items-center gap-4 animate-in fade-in slide-in-from-top-4 duration-500">
@@ -107,7 +114,7 @@
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
                 </div>
                 <div>
-                    <p class="text-[10px] font-black uppercase tracking-widest text-emerald-600">Verification Success</p>
+                    <p class="text-[10px] font-black uppercase tracking-widest text-emerald-600">Verifikasi Berhasil</p>
                     <p class="text-slate-700 font-bold">{{ session('success') }}</p>
                 </div>
             </div>
@@ -120,8 +127,8 @@
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
                     </div>
                     <div>
-                        <p class="text-[10px] font-black uppercase tracking-widest text-red-600">Validation Error</p>
-                        <p class="text-slate-700 font-bold">Please resolve the following issues:</p>
+                        <p class="text-[10px] font-black uppercase tracking-widest text-red-600">Gagal Validasi</p>
+                        <p class="text-slate-700 font-bold">Harap selesaikan masalah berikut:</p>
                     </div>
                 </div>
                 <ul class="space-y-1 ml-14">
@@ -135,18 +142,20 @@
         @yield('content')
     </main>
 
+    @if(!request()->routeIs('chat.*'))
     <footer class="border-t border-slate-200 bg-white py-12">
         <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
             <div class="text-center md:text-left">
                 <p class="text-sm font-bold text-slate-900">TOKO ALPIN <span class="text-indigo-600">POS</span></p>
-                <p class="text-xs text-slate-400 mt-1">&copy; {{ date('Y') }} All rights reserved.</p>
+                <p class="text-xs text-slate-400 mt-1">&copy; {{ date('Y') }} Seluruh hak cipta dilindungi.</p>
             </div>
             <div class="flex items-center gap-6">
-                <a href="#" class="text-xs font-semibold text-slate-500 hover:text-indigo-600 transition">Privacy Policy</a>
-                <a href="#" class="text-xs font-semibold text-slate-500 hover:text-indigo-600 transition">Terms of Service</a>
+                <a href="#" class="text-xs font-semibold text-slate-500 hover:text-indigo-600 transition">Kebijakan Privasi</a>
+                <a href="#" class="text-xs font-semibold text-slate-500 hover:text-indigo-600 transition">Ketentuan Layanan</a>
             </div>
         </div>
     </footer>
+    @endif
 
     @include('chat.partials.widget')
 

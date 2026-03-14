@@ -10,10 +10,10 @@
             </a>
             <div>
                 <div class="flex items-center gap-3">
-                    <h1 class="text-3xl font-black text-slate-900 tracking-tight">Receipt <span class="text-indigo-600">Verification</span></h1>
-                    <span class="badge-modern bg-indigo-50 text-indigo-600 border border-indigo-100">Verified Node</span>
+                    <h1 class="text-3xl font-black text-slate-900 tracking-tight">Verifikasi <span class="text-indigo-600">Struk</span></h1>
+                    <span class="badge-modern bg-indigo-50 text-indigo-600 border border-indigo-100">Node Tervalidasi</span>
                 </div>
-                <p class="text-slate-500 mt-1 font-medium italic">Referencing Entity: <span class="font-mono text-slate-900 not-italic font-black">{{ $transaction->transaction_id ?? 'TX-'.str_pad($transaction->id, 8, '0', STR_PAD_LEFT) }}</span></p>
+                <p class="text-slate-500 mt-1 font-medium italic">Referensi Entitas: <span class="font-mono text-slate-900 not-italic font-black">{{ $transaction->transaction_id ?? 'TX-'.str_pad($transaction->id, 8, '0', STR_PAD_LEFT) }}</span></p>
             </div>
         </div>
 
@@ -32,17 +32,17 @@
         <div class="lg:col-span-2 space-y-8">
             <div class="glass-card overflow-hidden shadow-2xl shadow-slate-200/40 bg-white/70 backdrop-blur-xl border border-white">
                 <div class="p-8 border-b border-slate-50 flex justify-between items-center bg-slate-50/50">
-                    <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Order Manifest</h3>
-                    <span class="font-black text-slate-900 text-sm">{{ $transaction->details->count() }} Registered Items</span>
+                    <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Manifes Pesanan</h3>
+                    <span class="font-black text-slate-900 text-sm">{{ $transaction->details->count() }} Item Terdaftar</span>
                 </div>
                 
                 <div class="overflow-x-auto">
                     <table class="w-full text-left">
                         <thead>
                             <tr class="text-[10px] font-black text-slate-400 uppercase tracking-widest bg-slate-50/30">
-                                <th class="px-8 py-5">Product Definition</th>
-                                <th class="px-8 py-5 text-center">Volume</th>
-                                <th class="px-8 py-5 text-right">Unit Value</th>
+                                <th class="px-8 py-5">Deskripsi Produk</th>
+                                <th class="px-8 py-5 text-center">Jumlah</th>
+                                <th class="px-8 py-5 text-right">Harga Satuan</th>
                                 <th class="px-8 py-5 text-right">Net Subtotal</th>
                             </tr>
                         </thead>
@@ -56,12 +56,17 @@
                                             </div>
                                             <div>
                                                 <div class="font-black text-slate-900 group-hover:text-indigo-600 transition-colors leading-tight">{{ $detail->product->name }}</div>
-                                                <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">{{ $detail->product->category->name ?? 'Inventory' }}</div>
+                                                <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">{{ $detail->product->category->name ?? 'Inventori' }}</div>
                                             </div>
                                         </div>
                                     </td>
                                     <td class="px-8 py-6 text-center">
-                                        <span class="inline-block px-3 py-1 bg-slate-100 rounded-lg text-xs font-black text-slate-600 border border-slate-200/50">{{ $detail->quantity }}</span>
+                                        <div class="flex flex-col items-center gap-1">
+                                            <span class="inline-block px-3 py-1 bg-slate-100 rounded-lg text-xs font-black text-slate-600 border border-slate-200/50">{{ $detail->quantity }}</span>
+                                            <span class="text-[9px] font-black uppercase tracking-widest {{ $detail->unit_type === 'pack' ? 'text-indigo-500' : 'text-slate-400' }}">
+                                                {{ $detail->unit_type === 'pack' ? 'Pack' : 'Pcs' }}
+                                            </span>
+                                        </div>
                                     </td>
                                     <td class="px-8 py-6 text-right font-bold text-slate-500">Rp {{ number_format($detail->price, 0, ',', '.') }}</td>
                                     <td class="px-8 py-6 text-right">
@@ -79,19 +84,19 @@
         <div class="space-y-10">
             <!-- Payment Recap -->
             <div class="glass-card p-10 space-y-10 border-b-8 border-indigo-600 bg-slate-900 text-white shadow-2xl shadow-indigo-200">
-                <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-300/60">Financial Protocol</h3>
+                <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-300/60">Ringkasan Pembayaran</h3>
                 
                 <div class="space-y-6">
                     <div class="flex justify-between items-end border-b border-white/5 pb-4">
-                        <span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Gross Total</span>
+                        <span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Total Kotor</span>
                         <span class="text-xl font-bold font-mono">Rp {{ number_format($transaction->total_price, 0, ',', '.') }}</span>
                     </div>
                     <div class="flex justify-between items-end border-b border-white/5 pb-4">
-                        <span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Total Tendered</span>
+                        <span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Total Bayar</span>
                         <span class="text-xl font-bold font-mono">Rp {{ number_format($transaction->amount_paid, 0, ',', '.') }}</span>
                     </div>
                     <div class="pt-6 flex flex-col gap-2">
-                        <span class="text-[10px] font-black uppercase tracking-widest text-emerald-400">Balance Return</span>
+                        <span class="text-[10px] font-black uppercase tracking-widest text-emerald-400">Kembalian</span>
                         <div class="text-4xl font-black tracking-tighter text-white">Rp {{ number_format($transaction->change_amount, 0, ',', '.') }}</div>
                     </div>
                 </div>
@@ -99,7 +104,7 @@
 
             <!-- Context Info -->
             <div class="glass-card p-10 space-y-8 bg-white border border-slate-200/50">
-                <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Meta Information</h3>
+                <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Informasi Meta</h3>
                 
                 <div class="space-y-6">
                     <div class="flex items-center gap-5 group">
@@ -107,8 +112,8 @@
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                         </div>
                         <div>
-                            <p class="text-[10px] font-black uppercase tracking-widest text-slate-400">Timestamp</p>
-                            <p class="text-sm font-bold text-slate-900 mt-0.5">{{ $transaction->created_at->format('M d, Y • H:i A') }}</p>
+                            <p class="text-[10px] font-black uppercase tracking-widest text-slate-400">Waktu Transaksi</p>
+                            <p class="text-sm font-bold text-slate-900 mt-0.5">{{ $transaction->created_at->format('d M, Y • H:i') }}</p>
                         </div>
                     </div>
 
@@ -117,8 +122,8 @@
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
                         </div>
                         <div>
-                            <p class="text-[10px] font-black uppercase tracking-widest text-slate-400">Operator</p>
-                            <p class="text-sm font-bold text-slate-900 mt-0.5">{{ $transaction->user->name ?? 'System Identity' }}</p>
+                            <p class="text-[10px] font-black uppercase tracking-widest text-slate-400">Kasir</p>
+                            <p class="text-sm font-bold text-slate-900 mt-0.5">{{ $transaction->user->name ?? 'Identitas Sistem' }}</p>
                         </div>
                     </div>
                 </div>

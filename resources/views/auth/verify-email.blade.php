@@ -8,28 +8,28 @@
         </div>
         
         <div>
-            <h1 class="text-3xl font-bold">Check your Gmail!</h1>
+            <h1 class="text-3xl font-bold">Cek Gmail Anda!</h1>
             <p class="text-slate-400 mt-4 leading-relaxed">
-                Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? 
-                If you didn't receive the email, we will gladly send you another.
+                Terima kasih telah mendaftar! Sebelum memulai, silakan verifikasi alamat email Anda dengan mengklik tautan yang baru saja kami kirimkan ke email Anda. 
+                Jika Anda tidak menerima email tersebut, kami akan dengan senang hati mengirimkannya kembali.
             </p>
         </div>
 
         @if (session('status') == 'verification-link-sent')
             <div class="bg-emerald-500/10 border border-emerald-500/20 py-3 rounded-xl text-emerald-400 font-medium">
-                A new verification link has been sent to your Gmail!
+                Tautan verifikasi baru telah dikirimkan ke alamat Gmail Anda!
             </div>
         @endif
 
         <div class="flex flex-col sm:flex-row gap-4 justify-center pt-4">
             <form method="POST" action="{{ route('verification.send') }}">
                 @csrf
-                <button type="submit" class="btn-primary px-8 py-3 rounded-xl font-bold">Resend Verification Email</button>
+                <button type="submit" class="btn-primary px-8 py-3 rounded-xl font-bold">Kirim Ulang Email Verifikasi</button>
             </form>
 
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
-                <button type="submit" class="bg-white/5 hover:bg-white/10 px-8 py-3 rounded-xl border border-white/10 transition">Log Out</button>
+                <button type="submit" class="bg-white/5 hover:bg-white/10 px-8 py-3 rounded-xl border border-white/10 transition">Keluar</button>
             </form>
         </div>
     </div>

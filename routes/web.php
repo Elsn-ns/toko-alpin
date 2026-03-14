@@ -28,15 +28,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('password.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // Backend / Staff Only Routes
+    // Backend / Staff & Admin Shared Routes
     Route::middleware(['staff'])->group(function () {
-        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        // Common viewing
+        Route::get('/products', [ProductController::class, 'index'])->name('products.index');
         
-        // Core Modules
-        Route::resource('products', ProductController::class);
-        Route::resource('incoming-products', IncomingProductController::class);
-        
-        // POS
+        // POS & Transactions
         Route::resource('pos', TransactionController::class)->names('pos');
         Route::get('/transactions', [TransactionController::class, 'history'])->name('transactions.history');
         Route::get('/transactions/{transaction}', [TransactionController::class, 'show'])->name('transactions.show');
@@ -46,9 +43,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Staff Inbox
         Route::get('/inbox', [ChatController::class, 'staffInbox'])->name('chat.inbox');
         Route::get('/inbox/{conversation}', [ChatController::class, 'staffShow'])->name('chat.inbox.show');
+        Route::get('/api/messages/{conversation}', [ChatController::class, 'getMessagesApi'])->name('chat.api.messages');
         
         // Admin Only Routes
         Route::middleware(['admin'])->group(function () {
+            Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+            
+            // Full Product Management
+            Route::resource('products', ProductController::class)->except(['index']);
+            Route::resource('incoming-products', IncomingProductController::class);
+            
             Route::resource('staff', \App\Http\Controllers\StaffController::class)->except(['show']);
         });
     });

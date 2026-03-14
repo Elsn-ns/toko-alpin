@@ -20,14 +20,23 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         \Illuminate\Support\Facades\View::composer('chat.partials.widget', function ($view) {
-            if (auth()->check() && auth()->user()->role === 'customer') {
-                $conversation = \App\Models\Conversation::where('customer_id', auth()->id())->first();
-                $messages = $conversation ? $conversation->messages()->with('sender')->get() : collect();
-                
-                $view->with([
-                    'conversation' => $conversation,
-                    'messages' => $messages,
-                ]);
+            if (auth()->check()) {
+                $user = auth()->user();
+                if ($user->role === 'customer') {
+                    $conversation = \App\Models\Conversation::where('customer_id', $user->id)->first();
+                    $messages = $conversation ? $conversation->messages()->with('sender')->get() : collect();
+                    $view->with([
+                        'conversation' => $conversation,
+                        'messages' => $messages,
+                    ]);
+                } elseif ($user->isStaff()) {
+                    $conversations = \App\Models\Conversation::with(['customer', 'messages' => function($q) {
+                        $q->latest()->take(1);
+                    }])->orderBy('last_message_at', 'desc')->get();
+                    $view->with([
+                        'conversations' => $conversations,
+                    ]);
+                }
             }
         });
     }

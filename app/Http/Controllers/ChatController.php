@@ -72,10 +72,31 @@ class ChatController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => $message->load('sender'),
-                'formatted_date' => $message->created_at->format('M d, Y g:i A')
+                'formatted_date' => $message->created_at->format('d M Y, H:i')
             ]);
         }
 
         return back();
+    }
+    public function getMessagesApi(Conversation $conversation)
+    {
+        if (auth()->user()->isStaff()) {
+            $conversation->messages()->where('sender_id', '!=', auth()->id())->where('is_read', false)->update(['is_read' => true]);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'customer' => $conversation->customer,
+            'messages' => $conversation->messages()->with('sender')->get()->map(function($msg) {
+                return [
+                    'id' => $msg->id,
+                    'body' => $msg->body,
+                    'sender_id' => $msg->sender_id,
+                    'is_staff' => $msg->sender->isStaff(),
+                    'sender_name' => $msg->sender->name,
+                    'time' => $msg->created_at->format('g:i A'),
+                ];
+            })
+        ]);
     }
 }

@@ -36,7 +36,7 @@ class TransactionController extends Controller
                 $totalPrice += $price * $item['quantity'];
                 
                 if ($product->stock < $quantityToDeduct) {
-                    throw new \Exception("Insufficient stock for {$product->name}");
+                    throw new \Exception("Stok tidak mencukupi untuk {$product->name}");
                 }
             }
 
