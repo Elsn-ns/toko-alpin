@@ -142,20 +142,7 @@
         @yield('content')
     </main>
 
-    @if(!request()->routeIs('chat.*'))
-    <footer class="border-t border-slate-200 bg-white py-12">
-        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
-            <div class="text-center md:text-left">
-                <p class="text-sm font-bold text-slate-900">TOKO ALPIN <span class="text-indigo-600">POS</span></p>
-                <p class="text-xs text-slate-400 mt-1">&copy; {{ date('Y') }} Seluruh hak cipta dilindungi.</p>
-            </div>
-            <div class="flex items-center gap-6">
-                <a href="#" class="text-xs font-semibold text-slate-500 hover:text-indigo-600 transition">Kebijakan Privasi</a>
-                <a href="#" class="text-xs font-semibold text-slate-500 hover:text-indigo-600 transition">Ketentuan Layanan</a>
-            </div>
-        </div>
-    </footer>
-    @endif
+
 
     @include('chat.partials.widget')
 
