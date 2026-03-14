@@ -93,16 +93,16 @@
             <div x-show="view === 'chat'" class="flex-1 flex flex-col min-h-0">
                 <div id="widgetMessages" class="flex-1 overflow-y-auto p-5 md:p-8 space-y-4 md:space-y-6 bg-slate-50/30 custom-scrollbar">
                     <template x-for="msg in currentMessages" :key="msg.id">
-                        <div class="flex" :class="msg.is_staff ? 'justify-end' : 'justify-start'">
+                        <div class="flex" :class="msg.is_staff === isStaff ? 'justify-end' : 'justify-start'">
                             <div class="max-w-[85%] space-y-1.5">
-                                <div class="flex items-center gap-2" :class="msg.is_staff ? 'flex-row-reverse' : ''">
+                                <div class="flex items-center gap-2" :class="msg.is_staff === isStaff ? 'flex-row-reverse' : ''">
                                      <span class="text-[8px] font-black uppercase tracking-widest" 
-                                           :class="msg.is_staff ? 'text-indigo-400' : 'text-slate-400'"
+                                           :class="msg.is_staff === isStaff ? 'text-indigo-400' : 'text-slate-400'"
                                            x-text="msg.is_staff === isStaff ? 'Anda' : activeCustomer.name"></span>
                                      <span class="text-[8px] font-bold text-slate-300" x-text="msg.time"></span>
                                 </div>
                                 <div class="px-5 py-3.5 transition-all duration-300" 
-                                     :class="msg.is_staff ? 'bg-slate-900 text-white rounded-[24px] rounded-tr-none border border-slate-800' : 'bg-white border border-slate-100 text-slate-700 rounded-[24px] rounded-tl-none'">
+                                     :class="msg.is_staff === isStaff ? 'bg-slate-900 text-white rounded-[24px] rounded-tr-none border border-slate-800' : 'bg-white border border-slate-100 text-slate-700 rounded-[24px] rounded-tl-none'">
                                     <p class="text-sm font-medium leading-relaxed" x-text="msg.body"></p>
                                 </div>
                             </div>
